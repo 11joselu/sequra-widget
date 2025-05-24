@@ -18,18 +18,22 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private render() {
-    if (this.getAttribute('value') === '15000') {
-      this.instalments = [
+    const productValue = this.getAttribute('value') === '15000';
+    let instalments: Array<Instalment> = [];
+    if (productValue) {
+      instalments = [
         toInstalment(createInstalment(3, 5300, '53,00 €')),
         toInstalment(createInstalment(6, 2800, '28,00 €')),
       ];
     } else {
-      this.instalments = [
+      instalments = [
         toInstalment(createInstalment(3, 5300, '53,00 €')),
         toInstalment(createInstalment(6, 2800, '28,00 €')),
         toInstalment(createInstalment(12, 1550, '15,50 €')),
       ];
     }
+
+    this.instalments = instalments;
 
     this.shadowDOM.innerHTML = `
       <form>
