@@ -211,10 +211,13 @@ To ensure consistent code style and prevent broken code from being committed:
 
 This workflow helps maintain high-quality, clean, and reliable code throughout development.
 
-### ⚠️ Assumptions & Improvements
+### Assumptions & Improvements
 
 - **Resilient Event Handling**: Currently, the app assumes that if sending analytics or tracking events fails (e.g., network error or endpoint unavailable), it should **fail silently** to avoid disrupting the user experience. This is intentional to keep the widget running smoothly.  
 
 - **Installments Always Returned**: The implementation assumes the SeQura API always returns valid installment data for a given price.  
   ✅ *Improvement*: Introduce fallback UI states for edge cases (e.g., empty response, unsupported amount) to improve robustness and clarity for users.
+
+- **Show error message**: The implementation assumes that we show an error message if the API call fails.  
+  ✅ *Improvement*: Add a retry mechanism to handle transient network issues and improve user experience.
 
