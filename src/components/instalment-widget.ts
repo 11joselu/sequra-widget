@@ -6,11 +6,7 @@ import {
 
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
-  private readonly instalments: Array<Instalment> = [
-    toInstalment(createInstalment(3, 5300, '53,00 €')),
-    toInstalment(createInstalment(6, 2800, '28,00 €')),
-    toInstalment(createInstalment(12, 1550, '15,50 €')),
-  ];
+  private instalments: Array<Instalment> = [];
 
   constructor() {
     super();
@@ -22,6 +18,19 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private render() {
+    if (this.getAttribute('value') === '15000') {
+      this.instalments = [
+        toInstalment(createInstalment(3, 5300, '53,00 €')),
+        toInstalment(createInstalment(6, 2800, '28,00 €')),
+      ];
+    } else {
+      this.instalments = [
+        toInstalment(createInstalment(3, 5300, '53,00 €')),
+        toInstalment(createInstalment(6, 2800, '28,00 €')),
+        toInstalment(createInstalment(12, 1550, '15,50 €')),
+      ];
+    }
+
     this.shadowDOM.innerHTML = `
       <form>
         <label for="instalment-options">Págalo en</label>
