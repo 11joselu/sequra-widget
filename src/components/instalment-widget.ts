@@ -10,10 +10,6 @@ export class InstalmentWidget extends HTMLElement {
   private productValue: number = 0;
   private cache: Map<number, Array<Instalment>> = new Map();
 
-  static get observedAttributes() {
-    return ['value'];
-  }
-
   constructor() {
     super();
     this.shadowDOM = this.attachShadow({ mode: 'open' });
@@ -24,11 +20,15 @@ export class InstalmentWidget extends HTMLElement {
     this.shadowDOM.appendChild(styleEl);
   }
 
-  attributeChangedCallback(
+  static get observedAttributes() {
+    return ['value'];
+  }
+
+  public async attributeChangedCallback(
     name: string,
     oldValue: string | null,
     newValue: string | null
-  ) {
+  ): Promise<void> {
     if (name !== 'value') {
       return;
     }
@@ -46,11 +46,11 @@ export class InstalmentWidget extends HTMLElement {
 
     if (productValue !== this.productValue) {
       this.productValue = productValue;
-      this.renderInstalmentsByProductValue(productValue);
+      await this.renderInstalmentsByProductValue(productValue);
     }
   }
 
-  async connectedCallback() {
+  async connectedCallback(): Promise<void> {
     this.wrapper.id =
       this.getAttribute('id') || `widget-${Date.now().toString()}`;
     this.shadowDOM.appendChild(this.wrapper);
