@@ -84,7 +84,7 @@ describe('Fetch instalments', () => {
     });
   });
 
-  describe('successfully', async () => {
+  describe('wrongly', async () => {
     const productValue = 11111;
     beforeEach(async () => {
       mockPost('/events');
