@@ -1,20 +1,8 @@
-type StringValuePair = { value: number; string: string };
-type Instalment = {
-  instalment_count: number;
-  total_with_tax: StringValuePair;
-  instalment_amount: StringValuePair;
-  instalment_fee: StringValuePair;
-  instalment_total: StringValuePair;
-  grand_total: StringValuePair;
-  cost_of_credit: StringValuePair;
-  cost_of_credit_pct: StringValuePair;
-  apr: StringValuePair;
-  max_financed_amount: StringValuePair;
-};
+import type { InstalmentAPIResponse } from '../models/instalment.ts';
 
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
-  private readonly instalments: Instalment[] = [
+  private readonly instalments: InstalmentAPIResponse[] = [
     createInstalment(3, 5300, '53,00 €'),
     createInstalment(6, 2800, '28,00 €'),
     createInstalment(12, 1550, '15,50 €'),
