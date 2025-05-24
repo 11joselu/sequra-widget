@@ -18,6 +18,14 @@ test('Can select 6 instalment payment', () => {
   ).toBeVisible();
 });
 
+test('Can select 12 installments payment', () => {
+  const screen = render();
+
+  expect(
+    screen.getByRole('option', { name: '12 cuotas de 15,50 €/mes' })
+  ).toBeVisible();
+});
+
 /**
  * Custom render helper for testing the <sequra-instalment-widget> Web Component.
  *
