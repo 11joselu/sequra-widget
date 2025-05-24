@@ -9,11 +9,13 @@ export function mockGet<ResponseType>(url: string, response: ResponseType) {
 
 export function mockPost<ResponseType = Record<string, unknown>>(
   url: string,
+  times = 1,
   status = 200,
   response?: ResponseType
 ) {
   return nock('http://localhost:8080')
     .post(url)
+    .times(times)
     .reply(status, response as Body);
 }
 

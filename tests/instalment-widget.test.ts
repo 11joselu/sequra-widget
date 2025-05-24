@@ -116,7 +116,7 @@ describe('Instalment details modal', () => {
   });
 
   test('Can view instalment fee after changing instalments select inside modal', async () => {
-    mockPost('/events');
+    mockPost('/events', 2);
     const productValue = 190123;
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
@@ -139,7 +139,7 @@ describe('Instalment details modal', () => {
   });
 
   test('Switching instalment can see an updated fee in a modal', async () => {
-    mockPost('/events');
+    mockPost('/events', 3);
     const productValue = 190123;
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
@@ -165,6 +165,7 @@ describe('Instalment details modal', () => {
 
 describe('Track instalment widget event', () => {
   const productValue = 15000;
+
   beforeEach(async () => {
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
@@ -188,5 +189,29 @@ describe('Track instalment widget event', () => {
     expect(
       trackInstamentWidgetEventModule.trackInstalmentWidgetEvent
     ).toHaveBeenCalledTimes(1);
+  });
+
+  test('Switching instalment send an event each time', async () => {
+    mockPost('/events', 3);
+    vi.spyOn(trackInstamentWidgetEventModule, 'trackInstalmentWidgetEvent');
+
+    const user = userEvent.setup();
+
+    const screen = await render(productValue);
+    await user.selectOptions(screen.getByLabelText('Págalo en'), ['6']);
+    await user.selectOptions(screen.getByLabelText('Págalo en'), ['3']);
+
+    expect(
+      trackInstamentWidgetEventModule.trackInstalmentWidgetEvent
+    ).toHaveBeenCalledTimes(3);
+    expect(
+      trackInstamentWidgetEventModule.trackInstalmentWidgetEvent
+    ).toHaveBeenNthCalledWith(1, 3);
+    expect(
+      trackInstamentWidgetEventModule.trackInstalmentWidgetEvent
+    ).toHaveBeenNthCalledWith(2, 6);
+    expect(
+      trackInstamentWidgetEventModule.trackInstalmentWidgetEvent
+    ).toHaveBeenNthCalledWith(3, 3);
   });
 });

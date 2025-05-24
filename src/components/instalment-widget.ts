@@ -25,6 +25,7 @@ export class InstalmentWidget extends HTMLElement {
     trackInstalmentWidgetEvent(select.count);
 
     this.onMoreInfoClicks();
+    this.onSelectChange();
   }
 
   private render() {
@@ -64,6 +65,14 @@ export class InstalmentWidget extends HTMLElement {
       const instalment = this.getSelectedInstalment();
       modal.innerHTML = this.getModalTemplate(instalment.fee.string);
       this.wrapper.appendChild(modal);
+    });
+  }
+
+  private onSelectChange() {
+    const select = this.getInstalmentSelect();
+    select.addEventListener('change', () => {
+      const instalment = this.getSelectedInstalment();
+      trackInstalmentWidgetEvent(instalment.count);
     });
   }
 
