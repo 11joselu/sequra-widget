@@ -4,6 +4,7 @@ import '../src/main';
 import { type InstalmentAPIResponse } from '../src/models/instalment';
 import { createInstalment, mockGet } from './utils';
 import * as getInstalmentByProductPriceModule from '../src/services/get-instalment-by-product-price';
+import { userEvent } from '@testing-library/user-event';
 
 describe('Render', () => {
   const productValue = 190123;
@@ -17,6 +18,7 @@ describe('Render', () => {
       ]
     );
   });
+
   test('instalments options based on product value', async () => {
     const screen = await render(productValue);
 
@@ -69,6 +71,25 @@ describe('Fetch instalments', () => {
   });
 });
 
+test('Can see instalment details in a modal', async () => {
+  const productValue = 190123;
+  mockGet<InstalmentAPIResponse[]>(
+    `/credit_agreements?totalWithTax=${productValue}`,
+    [createInstalment(3, 5300, '53,00 €', 500, '5 €')]
+  );
+  const user = userEvent.setup();
+
+  let screen = await render(productValue);
+  await user.click(screen.getByRole('button', { name: 'Más info' }));
+  screen = refreshScreenBind();
+
+  expect(
+    screen.getByText(
+      'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+    )
+  ).toBeVisible();
+});
+
 /**
  * Custom render helper for testing the <sequra-instalment-widget> Web Component.
  *
@@ -77,7 +98,7 @@ describe('Fetch instalments', () => {
  * shadow DOM of Web Components.
  */
 async function render(productValue: number) {
-  const shadowRoot = getShadowRootOfWidget(productValue);
+  const shadowRoot = renderSequraTag(productValue);
 
   await waitFor(async () => {
     // Wait for the shadow DOM to be populated
@@ -87,14 +108,26 @@ async function render(productValue: number) {
   return within(shadowRoot.querySelector('form') as HTMLFormElement);
 }
 
-async function renderWithoutWaitForRequest(productValue: number) {
-  const shadowRoot = getShadowRootOfWidget(productValue);
+function renderWithoutWaitForRequest(productValue: number) {
+  const shadowRoot = renderSequraTag(productValue);
 
-  return within(shadowRoot.firstChild as HTMLElement);
+  // @ts-expect-error: Type does not support ShadowRoot
+  return within(shadowRoot);
 }
 
-function getShadowRootOfWidget(productValue: number) {
+function refreshScreenBind() {
+  const shadowRoot = findShadowRootOfWidget();
+
+  // @ts-expect-error: Type does not support ShadowRoot
+  return within(shadowRoot);
+}
+
+function renderSequraTag(productValue: number) {
   document.body.innerHTML = `<sequra-instalment-widget value="${productValue}"></sequra-instalment-widget>`;
+  return findShadowRootOfWidget();
+}
+
+function findShadowRootOfWidget() {
   const element = document.body.querySelector('sequra-instalment-widget')!;
   return element.shadowRoot!;
 }

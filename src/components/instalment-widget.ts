@@ -16,13 +16,15 @@ export class InstalmentWidget extends HTMLElement {
     this.instalments = await getInstalmentByProductPrice(productValue);
     this.hideLoading();
     this.render();
+
+    this.onMoreInfoClicks();
   }
 
   private render() {
     this.shadowDOM.innerHTML = `
       <form>
         <label for="instalment-options">Págalo en</label>
-        <button type="button">Más info</button>
+        <button type="button" id="moreInfo">Más info</button>
         <select id="instalment-options">
           ${this.instalments.map((instalment) => {
             return `
@@ -43,5 +45,45 @@ export class InstalmentWidget extends HTMLElement {
 
   private hideLoading() {
     this.shadowDOM.innerHTML = ``;
+  }
+
+  private onMoreInfoClicks() {
+    const form = this.shadowDOM.firstElementChild as HTMLFormElement;
+    const button = form.querySelector('#moreInfo')! as HTMLButtonElement;
+    button.addEventListener('click', () => {
+      const modal = document.createElement('div');
+      modal.innerHTML = this.getModalTemplate('5 €');
+      this.shadowDOM.appendChild(modal);
+    });
+  }
+
+  private getModalTemplate(feeAmount: string): string {
+    return `
+     <section class="modal">
+        <header>
+          <img src="https://cdn.prod.website-files.com/62b803c519da726951bd71c2/62b803c519da72c35fbd72a2_Logo.svg" alt="seQura logo" />
+          <h2>
+          Fracciona tu pago
+          </h2>
+        </header>
+        <ul>
+          <li>
+            <span>Fracciona tu pago con un coste fijo por cuota.</span>
+            <img src="https://placehold.co/100" alt="Placeholder" width="100" height="100" />
+          </li>
+          <li>
+            <span>Ahora sólo pagas la primera cuota.</span>
+            <img src="https://placehold.co/100" alt="Placeholder" width="100" height="100" />
+          </li> 
+          <li>
+            <span>El resto de pagos se cargarán automáticamente a tu tarjeta.</span>
+            <img src="https://placehold.co/100" alt="Placeholder" width="100" height="100" />
+          </li> 
+        </ul>
+        
+        <footer>
+            <p>Además en el importe mostrado ya se incluye la cuota única mensual de ${feeAmount}/mes, por lo que no tendrás ningun sorpresas.</p>
+        </footer>
+      </section>`;
   }
 }
