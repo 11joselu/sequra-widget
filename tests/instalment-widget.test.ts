@@ -50,5 +50,5 @@ function render() {
   const element = document.body.querySelector('sequra-instalment-widget')!;
   const shadowRoot = element.shadowRoot!;
 
-  return within(shadowRoot.firstChild as HTMLElement);
+  return within(shadowRoot.querySelector('form') as HTMLFormElement);
 }

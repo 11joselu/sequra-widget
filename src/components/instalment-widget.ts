@@ -11,7 +11,8 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private render() {
-    this.shadowDOM.innerHTML = `<form>
+    this.shadowDOM.innerHTML = `
+      <form>
         <label for="instalment-options">Págalo en</label>
         <button type="button">Más info</button>
         <select id="instalment-options">
