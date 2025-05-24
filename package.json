@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "prepare": "husky",
-    "test": "vitest"
+    "test": "vitest",
+    "postinstall": "cd api && npm install"
   },
   "devDependencies": {
     "@eslint/css": "^0.8.1",
