@@ -50,8 +50,8 @@ export class InstalmentWidget extends HTMLElement {
   private onMoreInfoClicks() {
     const form = this.shadowDOM.firstElementChild as HTMLFormElement;
     const button = form.querySelector('#moreInfo')! as HTMLButtonElement;
+    const modal = document.createElement('div');
     button.addEventListener('click', () => {
-      const modal = document.createElement('div');
       modal.innerHTML = this.getModalTemplate('5 €');
       this.shadowDOM.appendChild(modal);
     });

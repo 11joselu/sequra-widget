@@ -90,6 +90,27 @@ test('Can see instalment details in a modal', async () => {
   ).toBeVisible();
 });
 
+test('Can see only one instalment details modal when I click multiple times', async () => {
+  const productValue = 190123;
+  mockGet<InstalmentAPIResponse[]>(
+    `/credit_agreements?totalWithTax=${productValue}`,
+    [createInstalment(3, 5300, '53,00 €', 500, '5 €')]
+  );
+  const user = userEvent.setup();
+
+  let screen = await render(productValue);
+  await user.click(screen.getByRole('button', { name: 'Más info' }));
+  await user.click(screen.getByRole('button', { name: 'Más info' }));
+  await user.click(screen.getByRole('button', { name: 'Más info' }));
+  screen = refreshScreenBind();
+
+  expect(
+    screen.getAllByText(
+      'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+    )
+  ).toHaveLength(1);
+});
+
 /**
  * Custom render helper for testing the <sequra-instalment-widget> Web Component.
  *
