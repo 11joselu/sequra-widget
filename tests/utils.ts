@@ -2,10 +2,14 @@
 import nock from 'nock';
 import { faker } from '@faker-js/faker';
 
-export function mockGet<ResponseType>(url: string, response: ResponseType) {
+export function mockGet<ResponseType>(
+  url: string,
+  response: ResponseType,
+  status = 200
+) {
   return nock(import.meta.env.VITE_API_URL)
     .get(url)
-    .reply(200, response as Body);
+    .reply(status, response as Body);
 }
 
 export function mockPost<ResponseType = Record<string, unknown>>(

@@ -46,7 +46,11 @@ export class InstalmentWidget extends HTMLElement {
 
     if (productValue !== this.productValue) {
       this.productValue = productValue;
-      await this.renderInstalmentsByProductValue(productValue);
+      try {
+        await this.renderInstalmentsByProductValue(productValue);
+      } catch {
+        this.renderErrorMessage();
+      }
     }
   }
 
@@ -56,7 +60,11 @@ export class InstalmentWidget extends HTMLElement {
     this.shadowDOM.appendChild(this.wrapper);
     const productValue = Number(this.getAttribute('value')!);
     this.productValue = productValue;
-    await this.renderInstalmentsByProductValue(productValue);
+    try {
+      await this.renderInstalmentsByProductValue(productValue);
+    } catch {
+      this.renderErrorMessage();
+    }
   }
 
   private async renderInstalmentsByProductValue(productValue: number) {
@@ -198,5 +206,9 @@ export class InstalmentWidget extends HTMLElement {
       throw new Error('Instalment not found');
     }
     return instalment;
+  }
+
+  private renderErrorMessage() {
+    this.wrapper.innerHTML = `<p data-testid="error-message">Lo sentimos, no podemos mostrar las opciones de financiación en este momento. Inténtalo de nuevo más tarde.</p`;
   }
 }

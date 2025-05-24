@@ -6,7 +6,11 @@ import { type InstalmentAPIResponse } from '../src/models/instalment';
 import { createInstalment, mockGet, mockPost } from './utils';
 import * as getInstalmentByProductPriceModule from '../src/services/get-instalment-by-product-price';
 import { userEvent } from '@testing-library/user-event';
-import { render, renderWithoutWaitForRequest } from './renderer';
+import {
+  render,
+  renderWidgetWhenRequestReturnsError,
+  renderWithoutWaitForRequest,
+} from './renderer';
 import * as trackInstamentWidgetEventModule from '../src/services/track-instalment-widget-event';
 
 describe('Render', () => {
@@ -52,27 +56,54 @@ describe('Render', () => {
 });
 
 describe('Fetch instalments', () => {
-  const productValue = 11111;
-  beforeEach(async () => {
-    mockPost('/events');
-    vi.spyOn(getInstalmentByProductPriceModule, 'getInstalmentByProductPrice');
-    mockGet<InstalmentAPIResponse[]>(
-      `/credit_agreements?totalWithTax=${productValue}`,
-      [createInstalment(3, 5300, '53,00 €')]
-    );
+  describe('successfully', async () => {
+    const productValue = 11111;
+    beforeEach(async () => {
+      mockPost('/events');
+      vi.spyOn(
+        getInstalmentByProductPriceModule,
+        'getInstalmentByProductPrice'
+      );
+      mockGet<InstalmentAPIResponse[]>(
+        `/credit_agreements?totalWithTax=${productValue}`,
+        [createInstalment(3, 5300, '53,00 €')]
+      );
+    });
+    test('Fetch instalment with given productValue', async () => {
+      await render(productValue);
+
+      expect(
+        getInstalmentByProductPriceModule.getInstalmentByProductPrice
+      ).toHaveBeenCalledWith(11111);
+    });
+
+    test('Shows loading when instalments are fetching', async () => {
+      const screen = await renderWithoutWaitForRequest(productValue);
+
+      expect(screen.getByText('Cargando...')).toBeVisible();
+    });
   });
-  test('Fetch instalment with given productValue', async () => {
-    await render(productValue);
 
-    expect(
-      getInstalmentByProductPriceModule.getInstalmentByProductPrice
-    ).toHaveBeenCalledWith(11111);
-  });
+  describe('successfully', async () => {
+    const productValue = 11111;
+    beforeEach(async () => {
+      mockPost('/events');
+      mockGet<{ message: string }>(
+        `/credit_agreements?totalWithTax=${productValue}`,
+        { message: 'Internal Server Error' },
+        500
+      );
+    });
 
-  test('Shows loading when instalments are fetching', async () => {
-    const screen = await renderWithoutWaitForRequest(productValue);
+    test('Show error message when loading instalments fails', async () => {
+      const screen = await renderWidgetWhenRequestReturnsError(productValue);
 
-    expect(screen.getByText('Cargando...')).toBeVisible();
+      expect(
+        await screen.findByText(
+          'Lo sentimos, no podemos mostrar las opciones de financiación en este momento. Inténtalo de nuevo más tarde.'
+        )
+      ).toBeVisible();
+    });
   });
 });
 

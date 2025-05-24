@@ -25,6 +25,22 @@ export function renderWithoutWaitForRequest(productValue: number) {
   return within(shadowRoot.lastElementChild as HTMLDivElement);
 }
 
+export async function renderWidgetWhenRequestReturnsError(
+  productValue: number,
+  id?: string
+) {
+  const shadowRoot = renderSequraTag(productValue, id);
+
+  await waitFor(async () => {
+    // Wait for the shadow DOM to be populated
+    expect(
+      shadowRoot.querySelector('[data-testid="error-message"]')
+    ).toBeTruthy();
+  });
+
+  return within(shadowRoot.lastElementChild as HTMLDivElement);
+}
+
 function renderSequraTag(productValue: number, id?: string) {
   document.body.innerHTML = `<sequra-instalment-widget value="${productValue}" id="${id}"></sequra-instalment-widget>`;
   const element = document.body.querySelector('sequra-instalment-widget')!;

@@ -40,3 +40,16 @@ test('Get 3, 6 and 12 instalment as a payment options', async () => {
   expect(instalment[1].count).toBe(6);
   expect(instalment[1].amount.string).toBe('28,00 €');
 });
+
+test('Throws error when instalment loading fails', async () => {
+  const productValue = 15000;
+  mockGet<InstalmentAPIResponse[]>(
+    `/credit_agreements?totalWithTax=${productValue}`,
+    [],
+    500
+  );
+
+  await expect(getInstalmentByProductPrice(productValue)).rejects.toThrow(
+    `Failed to fetch instalments for product value ${productValue}: Internal Server Error`
+  );
+});
