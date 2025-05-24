@@ -10,13 +10,13 @@ export class InstalmentWidget extends HTMLElement {
     this.shadowDOM = this.attachShadow({ mode: 'open' });
   }
 
-  connectedCallback() {
-    this.render();
+  async connectedCallback() {
+    await this.render();
   }
 
-  private render() {
+  private async render() {
     const productValue = Number(this.getAttribute('value')!);
-    this.instalments = getInstalmentByProductPrice(productValue);
+    this.instalments = await getInstalmentByProductPrice(productValue);
 
     this.shadowDOM.innerHTML = `
       <form>

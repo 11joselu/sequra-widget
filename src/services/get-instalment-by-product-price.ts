@@ -3,7 +3,7 @@ import {
   toInstalment,
 } from '../models/instalment.ts';
 
-export function getInstalmentByProductPrice(productValue: number) {
+export async function getInstalmentByProductPrice(productValue: number) {
   if (productValue === 15000) {
     return [
       toInstalment(createInstalment(3, 5300, '53,00 €')),
