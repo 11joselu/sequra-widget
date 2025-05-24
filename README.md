@@ -207,6 +207,9 @@ To ensure consistent code style and prevent broken code from being committed:
 ✅ A pre-commit hook is set up to:
 1. Lint and auto-fix code using ESLint
 2. Format files with Prettier
+3. Run all related unit tests to catch regressions early
+
+✅ A pre-push hook is set up to:
 3. Run all unit tests to catch regressions early
 
 This workflow helps maintain high-quality, clean, and reliable code throughout development.
