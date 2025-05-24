@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  refreshSequraWidget();
   $('.item-color').on('click', function () {
     $('.item-color')
       .removeClass('ring hover:ring-gray-200')
@@ -10,6 +11,7 @@ $(document).ready(function () {
     $('.product-capacity').removeClass('ring');
     $(this).addClass('ring');
     $('#product-price').html($(this).find('span').attr('data-price'));
+    refreshSequraWidget();
   });
 
   $('.btn-decrement').on('click', function () {
@@ -22,6 +24,8 @@ $(document).ready(function () {
     } else {
       $('.quantity > div > input').val('1');
     }
+
+    refreshSequraWidget();
   });
 
   $('.btn-increment').on('click', function () {
@@ -31,5 +35,21 @@ $(document).ready(function () {
     } else {
       $('.quantity > div > input').val('1');
     }
+
+    refreshSequraWidget();
   });
+
+  function refreshSequraWidget() {
+    const price = $('#product-price').text();
+    const quantity = $('.quantity > div > input').val();
+
+    const cleaned = price
+      .replace(/[^\d,.-]/g, '') // Remove currency and other symbols
+      .replace(',', '.'); // Convert comma to dot
+
+    const euros = parseFloat(cleaned) * quantity;
+    const cents = Math.round(euros * 100);
+
+    window.seQura.refresh('product-sequra-widget', cents);
+  }
 });
