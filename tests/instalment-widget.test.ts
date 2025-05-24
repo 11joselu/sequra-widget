@@ -77,6 +77,18 @@ test('Fetch instalment with given productValue', async () => {
   ).toHaveBeenCalledWith(11111);
 });
 
+test('Shows loading when instalments are fetching', async () => {
+  const productValue = 190123;
+  mockGet<InstalmentAPIResponse[]>(
+    `/credit_agreements?totalWithTax=${productValue}`,
+    [createInstalment(3, 5300, '53,00 €'), createInstalment(6, 2800, '28,00 €')]
+  );
+
+  const screen = await renderWithoutWaitForRequest(productValue);
+
+  expect(screen.getByText('Cargando...')).toBeVisible();
+});
+
 /**
  * Custom render helper for testing the <sequra-instalment-widget> Web Component.
  *
@@ -85,9 +97,7 @@ test('Fetch instalment with given productValue', async () => {
  * shadow DOM of Web Components.
  */
 async function render(productValue: number) {
-  document.body.innerHTML = `<sequra-instalment-widget value="${productValue}"></sequra-instalment-widget>`;
-  const element = document.body.querySelector('sequra-instalment-widget')!;
-  const shadowRoot = element.shadowRoot!;
+  const shadowRoot = getShadowRootOfWidget(productValue);
 
   await waitFor(async () => {
     // Wait for the shadow DOM to be populated
@@ -95,4 +105,16 @@ async function render(productValue: number) {
   });
 
   return within(shadowRoot.querySelector('form') as HTMLFormElement);
+}
+
+async function renderWithoutWaitForRequest(productValue: number) {
+  const shadowRoot = getShadowRootOfWidget(productValue);
+
+  return within(shadowRoot.firstChild as HTMLElement);
+}
+
+function getShadowRootOfWidget(productValue: number) {
+  document.body.innerHTML = `<sequra-instalment-widget value="${productValue}"></sequra-instalment-widget>`;
+  const element = document.body.querySelector('sequra-instalment-widget')!;
+  return element.shadowRoot!;
 }

@@ -11,13 +11,14 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   async connectedCallback() {
-    await this.render();
+    const productValue = Number(this.getAttribute('value')!);
+    this.showLoading();
+    this.instalments = await getInstalmentByProductPrice(productValue);
+    this.hideLoading();
+    this.render();
   }
 
-  private async render() {
-    const productValue = Number(this.getAttribute('value')!);
-    this.instalments = await getInstalmentByProductPrice(productValue);
-
+  private render() {
     this.shadowDOM.innerHTML = `
       <form>
         <label for="instalment-options">Págalo en</label>
@@ -34,5 +35,13 @@ export class InstalmentWidget extends HTMLElement {
         </select>
       </form>
     `;
+  }
+
+  private showLoading() {
+    this.shadowDOM.innerHTML = `<p>Cargando...</p`;
+  }
+
+  private hideLoading() {
+    this.shadowDOM.innerHTML = ``;
   }
 }
