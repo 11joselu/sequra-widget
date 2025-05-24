@@ -214,4 +214,38 @@ describe('Track instalment widget event', () => {
       trackInstamentWidgetEventModule.trackInstalmentWidgetEvent
     ).toHaveBeenNthCalledWith(3, 3);
   });
+
+  test('Tracking events do not break user experience if there are an error on first render', async () => {
+    mockPost('/events', 1, 500, 'Internal Server Error');
+    const user = userEvent.setup();
+    const screen = await render(productValue);
+
+    mockPost('/events', 1, 500, 'Internal Server Error');
+    await user.selectOptions(screen.getByLabelText('Págalo en'), ['3']);
+    await user.click(screen.getByRole('button', { name: 'Más info' }));
+
+    expect(
+      screen.getByText(
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+      )
+    ).toBeVisible();
+  });
+
+  test('Tracking events do not break user experience if there are an error', async () => {
+    mockPost('/events', 1);
+    const user = userEvent.setup();
+    const screen = await render(productValue);
+
+    mockPost('/events', 1, 500, 'Internal Server Error');
+    await user.selectOptions(screen.getByLabelText('Págalo en'), ['6']);
+    mockPost('/events', 1);
+    await user.selectOptions(screen.getByLabelText('Págalo en'), ['3']);
+    await user.click(screen.getByRole('button', { name: 'Más info' }));
+
+    expect(
+      screen.getByText(
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+      )
+    ).toBeVisible();
+  });
 });
