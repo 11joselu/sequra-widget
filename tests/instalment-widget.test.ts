@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import '../src/main';
+import '../src/instalment-widget';
 import { type InstalmentAPIResponse } from '../src/models/instalment';
 import { createInstalment, mockGet, mockPost } from './utils';
 import * as getInstalmentByProductPriceModule from '../src/services/get-instalment-by-product-price';
