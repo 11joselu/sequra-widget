@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import { resolve } from 'node:path';
+import postcssNesting from 'postcss-nesting';
 
 export default defineConfig({
   build: {
@@ -8,6 +9,11 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/instalment-widget.ts'),
       name: 'seQueraInstalmentWidget',
       fileName: 'seQueraInstalmentWidget',
+    },
+  },
+  css: {
+    postcss: {
+      plugins: [postcssNesting],
     },
   },
   test: {

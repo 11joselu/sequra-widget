@@ -1,3 +1,139 @@
-#instalment-options{
-    background-color: tomato;
+:host {
+  line-height: 1.5;
+  tab-size: 4;
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.instalment-widget {
+  padding: 1.5rem;
+  border: 1px solid rgb(209 213 219);
+
+  .form-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .form-select {
+    color: rgb(17 24 39);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding: 0.625rem;
+    background-color: #fff;
+    border-color: rgb(209 213 219);
+    border-width: 1px;
+    border-radius: 0.5rem;
+    width: 100%;
+    display: block;
+    margin-top: 0.5rem;
+  }
+
+  .form-button {
+    text-transform: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    background-image: none;
+    border-width: 0;
+  }
+
+  .modal {
+    z-index: 10;
+    position: relative;
+
+    .modal-backdrop {
+      transition-property: opacity;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+      background-color: rgb(107 114 128 / 0.75);
+      inset: 0;
+      position: fixed;
+    }
+
+    .modal-content-backdrop {
+      overflow-y: auto;
+      width: 100vw;
+      z-index: 10;
+      inset: 0;
+      position: fixed;
+    }
+
+    .modal-content-wrapper {
+      text-align: center;
+      padding: 1rem;
+      justify-content: center;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-content {
+      max-width: 28rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+      box-shadow:
+        0 0 #0000,
+        0 0 #0000,
+        0 20px 25px -5px rgb(0 0 0 / 0.1),
+        0 8px 10px -6px rgb(0 0 0 / 0.1);
+      text-align: left;
+      padding: 1.5rem;
+      background-color: rgb(255 255 255);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      position: relative;
+      transform: matrix(1, 0, 0, 1, 0, 0);
+    }
+
+    .modal-content-header {
+      gap: 1rem;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
+      display: flex;
+      margin-bottom: 2.5rem;
+
+      h2 {
+        margin: 0;
+      }
+    }
+
+    .modal-content-list {
+      margin: 0;
+      padding-inline-start: 15px;
+    }
+
+    .modal-content-list-item {
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      display: flex;
+      margin-bottom: 0.5rem;
+      width: 100%;
+    }
+
+    .modal-content-footer {
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+  }
 }
