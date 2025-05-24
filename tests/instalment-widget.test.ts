@@ -4,11 +4,7 @@ import { type InstalmentAPIResponse } from '../src/models/instalment';
 import { createInstalment, mockGet } from './utils';
 import * as getInstalmentByProductPriceModule from '../src/services/get-instalment-by-product-price';
 import { userEvent } from '@testing-library/user-event';
-import {
-  refreshScreenBind,
-  render,
-  renderWithoutWaitForRequest,
-} from './renderer';
+import { render, renderWithoutWaitForRequest } from './renderer';
 
 describe('Render', () => {
   const productValue = 190123;
@@ -83,9 +79,8 @@ test('Can see instalment details in a modal', async () => {
   );
   const user = userEvent.setup();
 
-  let screen = await render(productValue);
+  const screen = await render(productValue);
   await user.click(screen.getByRole('button', { name: 'Más info' }));
-  screen = refreshScreenBind();
 
   expect(
     screen.getByText(
@@ -102,11 +97,10 @@ test('Can see only one instalment details modal when I click multiple times', as
   );
   const user = userEvent.setup();
 
-  let screen = await render(productValue);
+  const screen = await render(productValue);
   await user.click(screen.getByRole('button', { name: 'Más info' }));
   await user.click(screen.getByRole('button', { name: 'Más info' }));
   await user.click(screen.getByRole('button', { name: 'Más info' }));
-  screen = refreshScreenBind();
 
   expect(
     screen.getAllByText(

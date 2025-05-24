@@ -4,13 +4,16 @@ import { getInstalmentByProductPrice } from '../services/get-instalment-by-produ
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
   private instalments: Array<Instalment> = [];
+  private wrapper: HTMLDivElement;
 
   constructor() {
     super();
     this.shadowDOM = this.attachShadow({ mode: 'open' });
+    this.wrapper = document.createElement('div');
   }
 
   async connectedCallback() {
+    this.shadowDOM.appendChild(this.wrapper);
     const productValue = Number(this.getAttribute('value')!);
     this.showLoading();
     this.instalments = await getInstalmentByProductPrice(productValue);
@@ -21,7 +24,7 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private render() {
-    this.shadowDOM.innerHTML = `
+    this.wrapper.innerHTML = `
       <form>
         <label for="instalment-options">Págalo en</label>
         <button type="button" id="moreInfo">Más info</button>
@@ -40,20 +43,21 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private showLoading() {
-    this.shadowDOM.innerHTML = `<p>Cargando...</p`;
+    this.wrapper.innerHTML = `<p>Cargando...</p`;
   }
 
   private hideLoading() {
-    this.shadowDOM.innerHTML = ``;
+    this.wrapper.innerHTML = ``;
   }
 
   private onMoreInfoClicks() {
-    const form = this.shadowDOM.firstElementChild as HTMLFormElement;
-    const button = form.querySelector('#moreInfo')! as HTMLButtonElement;
+    const button = this.wrapper.querySelector(
+      '#moreInfo'
+    )! as HTMLButtonElement;
     const modal = document.createElement('div');
     button.addEventListener('click', () => {
       modal.innerHTML = this.getModalTemplate('5 €');
-      this.shadowDOM.appendChild(modal);
+      this.wrapper.appendChild(modal);
     });
   }
 

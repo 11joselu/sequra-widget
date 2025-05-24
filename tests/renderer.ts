@@ -16,29 +16,18 @@ export async function render(productValue: number) {
     expect(shadowRoot.querySelector('form')).toBeTruthy();
   });
 
-  return within(shadowRoot.querySelector('form') as HTMLFormElement);
+  return within(shadowRoot.firstElementChild as HTMLDivElement);
 }
 
 export function renderWithoutWaitForRequest(productValue: number) {
   const shadowRoot = renderSequraTag(productValue);
 
-  // @ts-expect-error: Type does not support ShadowRoot
-  return within(shadowRoot);
-}
-
-export function refreshScreenBind() {
-  const shadowRoot = findShadowRootOfWidget();
-
-  // @ts-expect-error: Type does not support ShadowRoot
-  return within(shadowRoot);
+  return within(shadowRoot.firstElementChild as HTMLDivElement);
 }
 
 function renderSequraTag(productValue: number) {
   document.body.innerHTML = `<sequra-instalment-widget value="${productValue}"></sequra-instalment-widget>`;
-  return findShadowRootOfWidget();
-}
-
-function findShadowRootOfWidget() {
   const element = document.body.querySelector('sequra-instalment-widget')!;
+
   return element.shadowRoot!;
 }
