@@ -74,8 +74,12 @@ export class InstalmentWidget extends HTMLElement {
       this.wrapper.appendChild(modal);
     });
 
-    function handleBackdropClick() {
-      modal.remove();
+    function handleBackdropClick(evt: MouseEvent) {
+      const content = modal.querySelector('#modal-content');
+
+      if (content && !content.contains(evt.target as Node)) {
+        modal.remove();
+      }
     }
 
     modal.addEventListener('click', handleBackdropClick);
@@ -95,7 +99,7 @@ export class InstalmentWidget extends HTMLElement {
         <div class="modal-backdrop"></div>
         <div class="modal-content-backdrop" data-testid="modal-backdrop-content">
             <div class="modal-content-wrapper">
-              <div class="modal-content">
+              <div class="modal-content" id="modal-content">
                  <header class="modal-content-header">
                     <img src="https://cdn.prod.website-files.com/62b803c519da726951bd71c2/62b803c519da72c35fbd72a2_Logo.svg" alt="seQura logo" width="80">
                     <h2>
