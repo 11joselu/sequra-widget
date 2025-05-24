@@ -1,14 +1,16 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import '../src/main';
 import { type InstalmentAPIResponse } from '../src/models/instalment';
-import { createInstalment, mockGet } from './utils';
+import { createInstalment, mockGet, mockPost } from './utils';
 import * as getInstalmentByProductPriceModule from '../src/services/get-instalment-by-product-price';
 import { userEvent } from '@testing-library/user-event';
 import { render, renderWithoutWaitForRequest } from './renderer';
+import * as trackInstamentWidgetEventModule from '../src/services/track-instalment-widget-event';
 
 describe('Render', () => {
   const productValue = 190123;
   beforeEach(async () => {
+    mockPost('/events');
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
       [
@@ -50,6 +52,7 @@ describe('Render', () => {
 describe('Fetch instalments', () => {
   const productValue = 11111;
   beforeEach(async () => {
+    mockPost('/events');
     vi.spyOn(getInstalmentByProductPriceModule, 'getInstalmentByProductPrice');
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
@@ -73,6 +76,7 @@ describe('Fetch instalments', () => {
 
 describe('Instalment details modal', () => {
   test('Can see instalment details in a modal', async () => {
+    mockPost('/events');
     const productValue = 190123;
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
@@ -91,6 +95,7 @@ describe('Instalment details modal', () => {
   });
 
   test('Can see only one instalment details modal when I click multiple times', async () => {
+    mockPost('/events');
     const productValue = 190123;
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
@@ -111,6 +116,7 @@ describe('Instalment details modal', () => {
   });
 
   test('Can view instalment fee after changing instalments select inside modal', async () => {
+    mockPost('/events');
     const productValue = 190123;
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
@@ -133,6 +139,7 @@ describe('Instalment details modal', () => {
   });
 
   test('Switching instalment can see an updated fee in a modal', async () => {
+    mockPost('/events');
     const productValue = 190123;
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
@@ -153,5 +160,33 @@ describe('Instalment details modal', () => {
         'Además en el importe mostrado ya se incluye la cuota única mensual de 8 €/mes, por lo que no tendrás ningun sorpresas.'
       )
     ).toBeVisible();
+  });
+});
+
+describe('Track instalment widget event', () => {
+  const productValue = 15000;
+  beforeEach(async () => {
+    mockGet<InstalmentAPIResponse[]>(
+      `/credit_agreements?totalWithTax=${productValue}`,
+      [
+        createInstalment(3, 5300, '53,00 €'),
+        createInstalment(6, 2800, '28,00 €'),
+        createInstalment(12, 1550, '15,50 €'),
+      ]
+    );
+  });
+
+  test('Send selected instalment when render at first time', async () => {
+    mockPost('/events');
+    vi.spyOn(trackInstamentWidgetEventModule, 'trackInstalmentWidgetEvent');
+
+    await render(productValue);
+
+    expect(
+      trackInstamentWidgetEventModule.trackInstalmentWidgetEvent
+    ).toHaveBeenCalledWith(3);
+    expect(
+      trackInstamentWidgetEventModule.trackInstalmentWidgetEvent
+    ).toHaveBeenCalledTimes(1);
   });
 });

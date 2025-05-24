@@ -7,6 +7,16 @@ export function mockGet<ResponseType>(url: string, response: ResponseType) {
     .reply(200, response as Body);
 }
 
+export function mockPost<ResponseType = Record<string, unknown>>(
+  url: string,
+  status = 200,
+  response?: ResponseType
+) {
+  return nock('http://localhost:8080')
+    .post(url)
+    .reply(status, response as Body);
+}
+
 export function createInstalment(
   instalmentCount: number,
   instalmentAmount: number,

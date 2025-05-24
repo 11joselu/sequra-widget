@@ -1,5 +1,6 @@
 import { type Instalment } from '../models/instalment.ts';
 import { getInstalmentByProductPrice } from '../services/get-instalment-by-product-price.ts';
+import { trackInstalmentWidgetEvent } from '../services/track-instalment-widget-event.ts';
 
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
@@ -19,6 +20,9 @@ export class InstalmentWidget extends HTMLElement {
     this.instalments = await getInstalmentByProductPrice(productValue);
     this.hideLoading();
     this.render();
+
+    const select = this.getSelectedInstalment();
+    trackInstalmentWidgetEvent(select.count);
 
     this.onMoreInfoClicks();
   }
@@ -55,21 +59,10 @@ export class InstalmentWidget extends HTMLElement {
       '#moreInfo'
     )! as HTMLButtonElement;
     const modal = document.createElement('div');
-    const select = this.wrapper.querySelector(
-      '#instalment-options'
-    ) as HTMLSelectElement;
 
     button.addEventListener('click', () => {
-      const value = select.value;
-      const instalment = this.instalments.find(
-        (inst) => inst.count.toString() === value
-      );
-
-      if (!instalment) {
-        throw new Error('Instalment not found');
-      }
-
-      modal.innerHTML = this.getModalTemplate(instalment?.fee.string);
+      const instalment = this.getSelectedInstalment();
+      modal.innerHTML = this.getModalTemplate(instalment.fee.string);
       this.wrapper.appendChild(modal);
     });
   }
@@ -102,5 +95,23 @@ export class InstalmentWidget extends HTMLElement {
             <p>Además en el importe mostrado ya se incluye la cuota única mensual de ${feeAmount}/mes, por lo que no tendrás ningun sorpresas.</p>
         </footer>
       </section>`;
+  }
+
+  private getInstalmentSelect() {
+    return this.wrapper.querySelector(
+      '#instalment-options'
+    ) as HTMLSelectElement;
+  }
+
+  private getSelectedInstalment() {
+    const select = this.getInstalmentSelect();
+    const value = select.value;
+    const instalment = this.instalments.find(
+      (inst) => inst.count.toString() === value
+    );
+    if (!instalment) {
+      throw new Error('Instalment not found');
+    }
+    return instalment;
   }
 }
