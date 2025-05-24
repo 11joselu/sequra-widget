@@ -15,6 +15,7 @@ class InstalmentWidget extends HTMLElement {
   private render() {
     this.shadowDOM.innerHTML = `<form>
         <label for="instalment-options">Págalo en</label>
+        <button type="button">Más info</button>
         <select id="instalment-options">
           <option value="3">3 cuotas de 53,00 €/mes</option>
           <option value="6">6 cuotas de 28,00 €/mes</option>

@@ -32,6 +32,12 @@ test('Render installments options label', () => {
   expect(screen.getByLabelText('Págalo en')).toBeVisible();
 });
 
+test('Render installment details button', () => {
+  const screen = render();
+
+  expect(screen.getByRole('button', { name: 'Más info' })).toBeVisible();
+});
+
 /**
  * Custom render helper for testing the <sequra-instalment-widget> Web Component.
  *
