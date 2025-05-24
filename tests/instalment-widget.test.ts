@@ -4,35 +4,7 @@ import '../src/main';
 import { type InstalmentAPIResponse } from '../src/models/instalment';
 import { createInstalment, mockGet } from './utils';
 
-test('Can select 3 instalment payment', async () => {
-  const productValue = 15000;
-  mockGet<InstalmentAPIResponse[]>(
-    `/credit_agreements?totalWithTax=${productValue}`,
-    [createInstalment(3, 5300, '53,00 €'), createInstalment(6, 2800, '28,00 €')]
-  );
-
-  const screen = await render(productValue);
-
-  expect(
-    screen.getByRole('option', { name: '3 cuotas de 53,00 €/mes' })
-  ).toBeVisible();
-});
-
-test('Can select 6 instalment payment', async () => {
-  const productValue = 15000;
-  mockGet<InstalmentAPIResponse[]>(
-    `/credit_agreements?totalWithTax=${productValue}`,
-    [createInstalment(3, 5300, '53,00 €'), createInstalment(6, 2800, '28,00 €')]
-  );
-
-  const screen = await render(productValue);
-
-  expect(
-    screen.getByRole('option', { name: '6 cuotas de 28,00 €/mes' })
-  ).toBeVisible();
-});
-
-test('Can select 12 installments payment', async () => {
+test('Render instalments options based on product value', async () => {
   const productValue = 190123;
   mockGet<InstalmentAPIResponse[]>(
     `/credit_agreements?totalWithTax=${productValue}`,
@@ -43,8 +15,15 @@ test('Can select 12 installments payment', async () => {
     ]
   );
 
-  const screen = await render(190123);
+  const screen = await render(productValue);
 
+  expect(screen.getAllByRole('option')).toHaveLength(3);
+  expect(
+    screen.getByRole('option', { name: '3 cuotas de 53,00 €/mes' })
+  ).toBeVisible();
+  expect(
+    screen.getByRole('option', { name: '6 cuotas de 28,00 €/mes' })
+  ).toBeVisible();
   expect(
     screen.getByRole('option', { name: '12 cuotas de 15,50 €/mes' })
   ).toBeVisible();
@@ -72,22 +51,6 @@ test('Render installment details button', async () => {
   const screen = await render(productValue);
 
   expect(screen.getByRole('button', { name: 'Más info' })).toBeVisible();
-});
-
-test('Calculate instalment based on product value', async () => {
-  const productValue = 190123;
-  mockGet<InstalmentAPIResponse[]>(
-    `/credit_agreements?totalWithTax=${productValue}`,
-    [
-      createInstalment(3, 5300, '53,00 €'),
-      createInstalment(6, 2800, '28,00 €'),
-      createInstalment(12, 1550, '15,50 €'),
-    ]
-  );
-
-  const screen = await render(productValue);
-
-  expect(screen.getAllByRole('option')).toHaveLength(3);
 });
 
 /**
