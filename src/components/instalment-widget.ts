@@ -1,8 +1,5 @@
-import {
-  type Instalment,
-  type InstalmentAPIResponse,
-  toInstalment,
-} from '../models/instalment.ts';
+import { type Instalment } from '../models/instalment.ts';
+import { getInstalmentByProductPrice } from '../services/get-instalment-by-product-price.ts';
 
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
@@ -18,22 +15,8 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private render() {
-    const productValue = this.getAttribute('value') === '15000';
-    let instalments: Array<Instalment> = [];
-    if (productValue) {
-      instalments = [
-        toInstalment(createInstalment(3, 5300, '53,00 €')),
-        toInstalment(createInstalment(6, 2800, '28,00 €')),
-      ];
-    } else {
-      instalments = [
-        toInstalment(createInstalment(3, 5300, '53,00 €')),
-        toInstalment(createInstalment(6, 2800, '28,00 €')),
-        toInstalment(createInstalment(12, 1550, '15,50 €')),
-      ];
-    }
-
-    this.instalments = instalments;
+    const productValue = this.getAttribute('value')!;
+    this.instalments = getInstalmentByProductPrice(productValue);
 
     this.shadowDOM.innerHTML = `
       <form>
@@ -52,47 +35,4 @@ export class InstalmentWidget extends HTMLElement {
       </form>
     `;
   }
-}
-
-function createInstalment(
-  instalmentCount: number,
-  totalWithTax: number,
-  totalWithTaxCentsString: string
-): InstalmentAPIResponse {
-  return {
-    instalment_count: instalmentCount,
-    total_with_tax: {
-      value: totalWithTax,
-      string: totalWithTaxCentsString,
-    },
-    instalment_amount: {
-      value: totalWithTax,
-      string: totalWithTaxCentsString,
-    },
-    instalment_fee: {
-      value: totalWithTax,
-      string: totalWithTaxCentsString,
-    },
-    instalment_total: {
-      value: totalWithTax,
-      string: totalWithTaxCentsString,
-    },
-    grand_total: {
-      value: totalWithTax,
-      string: totalWithTaxCentsString,
-    },
-    cost_of_credit: {
-      value: totalWithTax,
-      string: totalWithTaxCentsString,
-    },
-    cost_of_credit_pct: {
-      value: totalWithTax,
-      string: totalWithTaxCentsString,
-    },
-    apr: { value: totalWithTax, string: totalWithTaxCentsString },
-    max_financed_amount: {
-      value: totalWithTax,
-      string: totalWithTaxCentsString,
-    },
-  };
 }
