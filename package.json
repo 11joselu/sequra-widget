@@ -12,7 +12,9 @@
     "lint": "eslint . --fix",
     "prepare": "husky",
     "test": "vitest",
-    "postinstall": "cd api && npm install"
+    "postinstall": "cd api && npm install",
+    "premerchant:preview": "npm run build && cp -r dist merchant-site",
+    "merchant:preview": "http-server merchant-site -p 3000 -o product-page.html"
   },
   "devDependencies": {
     "@eslint/css": "^0.8.1",
@@ -26,6 +28,7 @@
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
+    "http-server": "^14.1.1",
     "jsdom": "^26.1.0",
     "lint-staged": "^16.0.0",
     "nock": "^14.0.4",
