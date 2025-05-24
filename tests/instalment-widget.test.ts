@@ -1,3 +1,5 @@
+/// <reference types="../src/seQura.d.ts" />
+
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import '../src/instalment-widget';
 import { type InstalmentAPIResponse } from '../src/models/instalment';
@@ -292,4 +294,24 @@ describe('Track instalment widget event', () => {
       )
     ).toBeVisible();
   });
+});
+
+test('Can refresh instalment when price change', async () => {
+  mockGet<InstalmentAPIResponse[]>(`/credit_agreements?totalWithTax=1000`, [
+    createInstalment(3, 5300, '53,00 €'),
+  ]);
+  mockPost('/events', 2);
+  const screen = await render(1000, 'instalment-widget-test');
+
+  mockGet<InstalmentAPIResponse[]>(`/credit_agreements?totalWithTax=2800`, [
+    createInstalment(6, 2800, '28,00 €'),
+  ]);
+  window.seQura.refresh('instalment-widget-test', 2800);
+
+  expect(
+    screen.queryByRole('option', { name: '3 cuotas de 53,00 €/mes' })
+  ).toBeNull();
+  expect(
+    screen.queryByRole('option', { name: '6 cuotas de 28,00 €/mes' })
+  ).toBeNull();
 });

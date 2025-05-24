@@ -8,8 +8,8 @@ import { expect } from 'vitest';
  * (like Testing Library) which do not natively support querying inside the
  * shadow DOM of Web Components.
  */
-export async function render(productValue: number) {
-  const shadowRoot = renderSequraTag(productValue);
+export async function render(productValue: number, id?: string) {
+  const shadowRoot = renderSequraTag(productValue, id);
 
   await waitFor(async () => {
     // Wait for the shadow DOM to be populated
@@ -25,8 +25,8 @@ export function renderWithoutWaitForRequest(productValue: number) {
   return within(shadowRoot.lastElementChild as HTMLDivElement);
 }
 
-function renderSequraTag(productValue: number) {
-  document.body.innerHTML = `<sequra-instalment-widget value="${productValue}"></sequra-instalment-widget>`;
+function renderSequraTag(productValue: number, id?: string) {
+  document.body.innerHTML = `<sequra-instalment-widget value="${productValue}" id="${id}"></sequra-instalment-widget>`;
   const element = document.body.querySelector('sequra-instalment-widget')!;
 
   return element.shadowRoot!;

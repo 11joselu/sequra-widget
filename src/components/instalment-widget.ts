@@ -7,10 +7,16 @@ export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
   private instalments: Array<Instalment> = [];
   private wrapper: HTMLDivElement;
+  private productValue: number;
+
+  static get observedAttributes() {
+    return ['value'];
+  }
 
   constructor() {
     super();
     this.shadowDOM = this.attachShadow({ mode: 'open' });
+    this.productValue = 0;
     this.wrapper = document.createElement('div');
     this.wrapper.classList.add('instalment-widget');
     const styleEl = document.createElement('style');
@@ -18,14 +24,46 @@ export class InstalmentWidget extends HTMLElement {
     this.shadowDOM.appendChild(styleEl);
   }
 
+  attributeChangedCallback(
+    name: string,
+    oldValue: string | null,
+    newValue: string | null
+  ) {
+    if (name !== 'value') {
+      return;
+    }
+
+    if (oldValue === null) {
+      return;
+    }
+
+    const productValue = Number(newValue);
+
+    if (isNaN(productValue)) {
+      console.warn(`Invalid product value: ${newValue}`);
+      return;
+    }
+
+    if (productValue !== this.productValue) {
+      this.productValue = productValue;
+      this.renderInstalmentsByProductValue(productValue);
+    }
+  }
+
   async connectedCallback() {
+    this.wrapper.id =
+      this.getAttribute('id') || `widget-${Date.now().toString()}`;
     this.shadowDOM.appendChild(this.wrapper);
     const productValue = Number(this.getAttribute('value')!);
+    this.productValue = productValue;
+    await this.renderInstalmentsByProductValue(productValue);
+  }
+
+  private async renderInstalmentsByProductValue(productValue: number) {
     this.showLoading();
     this.instalments = await getInstalmentByProductPrice(productValue);
     this.hideLoading();
     this.render();
-
     const select = this.getSelectedInstalment();
     trackInstalmentWidgetEvent(select.count);
 
