@@ -3,8 +3,8 @@ import {
   toInstalment,
 } from '../models/instalment.ts';
 
-export function getInstalmentByProductPrice(productValue: string) {
-  if (productValue === '15000') {
+export function getInstalmentByProductPrice(productValue: number) {
+  if (productValue === 15000) {
     return [
       toInstalment(createInstalment(3, 5300, '53,00 €')),
       toInstalment(createInstalment(6, 2800, '28,00 €')),

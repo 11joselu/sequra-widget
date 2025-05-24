@@ -15,7 +15,7 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private render() {
-    const productValue = this.getAttribute('value')!;
+    const productValue = Number(this.getAttribute('value')!);
     this.instalments = getInstalmentByProductPrice(productValue);
 
     this.shadowDOM.innerHTML = `
