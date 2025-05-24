@@ -10,21 +10,23 @@ export function mockGet<ResponseType>(url: string, response: ResponseType) {
 export function createInstalment(
   instalmentCount: number,
   instalmentAmount: number,
-  instalmentAountString: string
+  instalmentAmountString: string,
+  feeValue: number = 500,
+  feeAsString: string = '5 €'
 ) {
   return {
     instalment_count: instalmentCount,
     instalment_amount: {
       value: instalmentAmount,
-      string: instalmentAountString,
+      string: instalmentAmountString,
     },
     total_with_tax: {
       value: faker.number.int(),
       string: faker.string.alpha(),
     },
     instalment_fee: {
-      value: faker.number.int(),
-      string: faker.string.alpha(),
+      value: feeValue,
+      string: feeAsString,
     },
     instalment_total: {
       value: faker.number.int(),

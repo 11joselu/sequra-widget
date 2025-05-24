@@ -15,6 +15,7 @@ export type InstalmentAPIResponse = {
 export type Instalment = {
   count: number;
   amount: StringValuePair;
+  fee: StringValuePair;
 };
 
 export function toInstalment(instalment: InstalmentAPIResponse): Instalment {
@@ -23,6 +24,10 @@ export function toInstalment(instalment: InstalmentAPIResponse): Instalment {
     amount: {
       value: instalment.instalment_amount.value,
       string: instalment.instalment_amount.string,
+    },
+    fee: {
+      value: instalment.instalment_fee.value,
+      string: instalment.instalment_fee.string,
     },
   };
 }
