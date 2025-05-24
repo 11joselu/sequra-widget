@@ -1,6 +1,7 @@
 import { type Instalment } from '../models/instalment.ts';
 import { getInstalmentByProductPrice } from '../services/get-instalment-by-product-price.ts';
 import { trackInstalmentWidgetEvent } from '../services/track-instalment-widget-event.ts';
+import * as styles from './style.css?inline';
 
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
@@ -11,6 +12,9 @@ export class InstalmentWidget extends HTMLElement {
     super();
     this.shadowDOM = this.attachShadow({ mode: 'open' });
     this.wrapper = document.createElement('div');
+    const styleEl = document.createElement('style');
+    styleEl.textContent = styles.default;
+    this.shadowDOM.appendChild(styleEl);
   }
 
   async connectedCallback() {

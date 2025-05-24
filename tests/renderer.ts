@@ -16,13 +16,13 @@ export async function render(productValue: number) {
     expect(shadowRoot.querySelector('form')).toBeTruthy();
   });
 
-  return within(shadowRoot.firstElementChild as HTMLDivElement);
+  return within(shadowRoot.lastElementChild as HTMLDivElement);
 }
 
 export function renderWithoutWaitForRequest(productValue: number) {
   const shadowRoot = renderSequraTag(productValue);
 
-  return within(shadowRoot.firstElementChild as HTMLDivElement);
+  return within(shadowRoot.lastElementChild as HTMLDivElement);
 }
 
 function renderSequraTag(productValue: number) {

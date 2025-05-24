@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 
 export default defineConfig({
   build: {
+    cssCodeSplit: true,
     lib: {
       entry: resolve(__dirname, 'src/instalment-widget.ts'),
       name: 'seQueraInstalmentWidget',
