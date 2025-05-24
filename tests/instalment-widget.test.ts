@@ -108,3 +108,48 @@ test('Can see only one instalment details modal when I click multiple times', as
     )
   ).toHaveLength(1);
 });
+
+test('Can view instalment fee after changing instalments select inside modal', async () => {
+  const productValue = 190123;
+  mockGet<InstalmentAPIResponse[]>(
+    `/credit_agreements?totalWithTax=${productValue}`,
+    [
+      createInstalment(3, 5300, '53,00 €', 500, '8 €'),
+      createInstalment(6, 2800, '28,00 €', 700, '7 €'),
+    ]
+  );
+  const user = userEvent.setup();
+
+  const screen = await render(productValue);
+  await user.selectOptions(screen.getByLabelText('Págalo en'), ['6']);
+  await user.click(screen.getByRole('button', { name: 'Más info' }));
+
+  expect(
+    screen.getByText(
+      'Además en el importe mostrado ya se incluye la cuota única mensual de 7 €/mes, por lo que no tendrás ningun sorpresas.'
+    )
+  ).toBeVisible();
+});
+
+test('Switching instalment can see an updated fee in a modal', async () => {
+  const productValue = 190123;
+  mockGet<InstalmentAPIResponse[]>(
+    `/credit_agreements?totalWithTax=${productValue}`,
+    [
+      createInstalment(3, 5300, '53,00 €', 500, '8 €'),
+      createInstalment(6, 2800, '28,00 €', 700, '7 €'),
+    ]
+  );
+  const user = userEvent.setup();
+
+  const screen = await render(productValue);
+  await user.selectOptions(screen.getByLabelText('Págalo en'), ['6']);
+  await user.selectOptions(screen.getByLabelText('Págalo en'), ['3']);
+  await user.click(screen.getByRole('button', { name: 'Más info' }));
+
+  expect(
+    screen.getByText(
+      'Además en el importe mostrado ya se incluye la cuota única mensual de 8 €/mes, por lo que no tendrás ningun sorpresas.'
+    )
+  ).toBeVisible();
+});

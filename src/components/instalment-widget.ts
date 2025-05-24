@@ -55,8 +55,21 @@ export class InstalmentWidget extends HTMLElement {
       '#moreInfo'
     )! as HTMLButtonElement;
     const modal = document.createElement('div');
+    const select = this.wrapper.querySelector(
+      '#instalment-options'
+    ) as HTMLSelectElement;
+
     button.addEventListener('click', () => {
-      modal.innerHTML = this.getModalTemplate('5 €');
+      const value = select.value;
+      const instalment = this.instalments.find(
+        (inst) => inst.count.toString() === value
+      );
+
+      if (!instalment) {
+        throw new Error('Instalment not found');
+      }
+
+      modal.innerHTML = this.getModalTemplate(instalment?.fee.string);
       this.wrapper.appendChild(modal);
     });
   }
