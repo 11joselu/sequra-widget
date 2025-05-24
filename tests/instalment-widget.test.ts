@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { waitFor, within } from '@testing-library/dom';
 import '../src/main';
 import { type InstalmentAPIResponse } from '../src/models/instalment';
@@ -6,8 +6,8 @@ import { createInstalment, mockGet } from './utils';
 import * as getInstalmentByProductPriceModule from '../src/services/get-instalment-by-product-price';
 
 describe('Render', () => {
-  test('instalments options based on product value', async () => {
-    const productValue = 190123;
+  const productValue = 190123;
+  beforeEach(async () => {
     mockGet<InstalmentAPIResponse[]>(
       `/credit_agreements?totalWithTax=${productValue}`,
       [
@@ -16,7 +16,8 @@ describe('Render', () => {
         createInstalment(12, 1550, '15,50 €'),
       ]
     );
-
+  });
+  test('instalments options based on product value', async () => {
     const screen = await render(productValue);
 
     expect(screen.getAllByRole('option')).toHaveLength(3);
@@ -32,61 +33,40 @@ describe('Render', () => {
   });
 
   test('installments options label', async () => {
-    const productValue = 15000;
-    mockGet<InstalmentAPIResponse[]>(
-      `/credit_agreements?totalWithTax=${productValue}`,
-      [
-        createInstalment(3, 5300, '53,00 €'),
-        createInstalment(6, 2800, '28,00 €'),
-      ]
-    );
-
     const screen = await render(productValue);
 
     expect(screen.getByLabelText('Págalo en')).toBeVisible();
   });
 
   test('installment details button', async () => {
-    const productValue = 15000;
-    mockGet<InstalmentAPIResponse[]>(
-      `/credit_agreements?totalWithTax=${productValue}`,
-      [
-        createInstalment(3, 5300, '53,00 €'),
-        createInstalment(6, 2800, '28,00 €'),
-      ]
-    );
-
     const screen = await render(productValue);
 
     expect(screen.getByRole('button', { name: 'Más info' })).toBeVisible();
   });
 });
 
-test('Fetch instalment with given productValue', async () => {
+describe('Fetch instalments', () => {
   const productValue = 11111;
-  vi.spyOn(getInstalmentByProductPriceModule, 'getInstalmentByProductPrice');
-  mockGet<InstalmentAPIResponse[]>(
-    `/credit_agreements?totalWithTax=${productValue}`,
-    [createInstalment(3, 5300, '53,00 €')]
-  );
+  beforeEach(async () => {
+    vi.spyOn(getInstalmentByProductPriceModule, 'getInstalmentByProductPrice');
+    mockGet<InstalmentAPIResponse[]>(
+      `/credit_agreements?totalWithTax=${productValue}`,
+      [createInstalment(3, 5300, '53,00 €')]
+    );
+  });
+  test('Fetch instalment with given productValue', async () => {
+    await render(productValue);
 
-  await render(productValue);
+    expect(
+      getInstalmentByProductPriceModule.getInstalmentByProductPrice
+    ).toHaveBeenCalledWith(11111);
+  });
 
-  expect(
-    getInstalmentByProductPriceModule.getInstalmentByProductPrice
-  ).toHaveBeenCalledWith(11111);
-});
+  test('Shows loading when instalments are fetching', async () => {
+    const screen = await renderWithoutWaitForRequest(productValue);
 
-test('Shows loading when instalments are fetching', async () => {
-  const productValue = 190123;
-  mockGet<InstalmentAPIResponse[]>(
-    `/credit_agreements?totalWithTax=${productValue}`,
-    [createInstalment(3, 5300, '53,00 €'), createInstalment(6, 2800, '28,00 €')]
-  );
-
-  const screen = await renderWithoutWaitForRequest(productValue);
-
-  expect(screen.getByText('Cargando...')).toBeVisible();
+    expect(screen.getByText('Cargando...')).toBeVisible();
+  });
 });
 
 /**
