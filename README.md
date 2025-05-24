@@ -56,9 +56,10 @@ window.seQura.refresh('product-sequra-widget', 14999); // Update to €149.99
 Clone the repository and install dependencies:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/11joselu/sequra-widget.git
 cd <project-directory>
 npm install
+cp .env.example .env # Copy the example environment file
 ````
 
 ## Development
