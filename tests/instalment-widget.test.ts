@@ -1,8 +1,9 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { waitFor, within } from '@testing-library/dom';
 import '../src/main';
 import { type InstalmentAPIResponse } from '../src/models/instalment';
 import { createInstalment, mockGet } from './utils';
+import * as getInstalmentByProductPriceModule from '../src/services/get-instalment-by-product-price';
 
 describe('Render', () => {
   test('instalments options based on product value', async () => {
@@ -59,6 +60,21 @@ describe('Render', () => {
 
     expect(screen.getByRole('button', { name: 'Más info' })).toBeVisible();
   });
+});
+
+test('Fetch instalment with given productValue', async () => {
+  const productValue = 11111;
+  vi.spyOn(getInstalmentByProductPriceModule, 'getInstalmentByProductPrice');
+  mockGet<InstalmentAPIResponse[]>(
+    `/credit_agreements?totalWithTax=${productValue}`,
+    [createInstalment(3, 5300, '53,00 €')]
+  );
+
+  await render(productValue);
+
+  expect(
+    getInstalmentByProductPriceModule.getInstalmentByProductPrice
+  ).toHaveBeenCalledWith(11111);
 });
 
 /**
