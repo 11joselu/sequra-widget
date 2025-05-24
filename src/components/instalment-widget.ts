@@ -7,7 +7,8 @@ export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
   private instalments: Array<Instalment> = [];
   private wrapper: HTMLDivElement;
-  private productValue: number;
+  private productValue: number = 0;
+  private cache: Map<number, Array<Instalment>> = new Map();
 
   static get observedAttributes() {
     return ['value'];
@@ -16,7 +17,6 @@ export class InstalmentWidget extends HTMLElement {
   constructor() {
     super();
     this.shadowDOM = this.attachShadow({ mode: 'open' });
-    this.productValue = 0;
     this.wrapper = document.createElement('div');
     this.wrapper.classList.add('instalment-widget');
     const styleEl = document.createElement('style');
@@ -61,7 +61,14 @@ export class InstalmentWidget extends HTMLElement {
 
   private async renderInstalmentsByProductValue(productValue: number) {
     this.showLoading();
-    this.instalments = await getInstalmentByProductPrice(productValue);
+
+    if (this.cache.has(productValue)) {
+      this.instalments = this.cache.get(productValue)!;
+    } else {
+      this.instalments = await getInstalmentByProductPrice(productValue);
+    }
+
+    this.cache.set(productValue, this.instalments);
     this.hideLoading();
     this.render();
     const select = this.getSelectedInstalment();

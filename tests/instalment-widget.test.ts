@@ -315,3 +315,19 @@ test('Can refresh instalment when price change', async () => {
     screen.queryByRole('option', { name: '6 cuotas de 28,00 €/mes' })
   ).toBeNull();
 });
+
+test('Reuse instalments from cache', async () => {
+  const produceValue = 1000;
+  vi.spyOn(getInstalmentByProductPriceModule, 'getInstalmentByProductPrice');
+  mockGet<InstalmentAPIResponse[]>(`/credit_agreements?totalWithTax=1000`, [
+    createInstalment(3, 5300, '53,00 €'),
+  ]);
+  mockPost('/events', 2);
+  await render(produceValue, 'instalment-widget-test');
+
+  window.seQura.refresh('instalment-widget-test', produceValue);
+
+  expect(
+    getInstalmentByProductPriceModule.getInstalmentByProductPrice
+  ).toHaveBeenCalledTimes(1);
+});
