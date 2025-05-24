@@ -26,6 +26,12 @@ test('Can select 12 installments payment', () => {
   ).toBeVisible();
 });
 
+test('Render installments options label', () => {
+  const screen = render();
+
+  expect(screen.getByLabelText('Págalo en')).toBeVisible();
+});
+
 /**
  * Custom render helper for testing the <sequra-instalment-widget> Web Component.
  *

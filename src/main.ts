@@ -13,11 +13,14 @@ class InstalmentWidget extends HTMLElement {
   }
 
   private render() {
-    this.shadowDOM.innerHTML = `<select>
-        <option value="3">3 cuotas de 53,00 €/mes</option>
-        <option value="6">6 cuotas de 28,00 €/mes</option>
-        <option value="12">12 cuotas de 15,50 €/mes</option>
-      </select>
+    this.shadowDOM.innerHTML = `<form>
+        <label for="instalment-options">Págalo en</label>
+        <select id="instalment-options">
+          <option value="3">3 cuotas de 53,00 €/mes</option>
+          <option value="6">6 cuotas de 28,00 €/mes</option>
+          <option value="12">12 cuotas de 15,50 €/mes</option>
+        </select>
+      </form>
     `;
   }
 }
