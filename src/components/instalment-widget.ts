@@ -73,6 +73,12 @@ export class InstalmentWidget extends HTMLElement {
       modal.innerHTML = this.getModalTemplate(instalment.fee.string);
       this.wrapper.appendChild(modal);
     });
+
+    function handleBackdropClick() {
+      modal.remove();
+    }
+
+    modal.addEventListener('click', handleBackdropClick);
   }
 
   private onSelectChange() {
@@ -87,7 +93,7 @@ export class InstalmentWidget extends HTMLElement {
     return `
      <section class="modal">
         <div class="modal-backdrop"></div>
-        <div class="modal-content-backdrop">
+        <div class="modal-content-backdrop" data-testid="modal-backdrop-content">
             <div class="modal-content-wrapper">
               <div class="modal-content">
                  <header class="modal-content-header">
