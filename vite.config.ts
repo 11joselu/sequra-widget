@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 import { resolve } from 'node:path';
 import postcssNesting from 'postcss-nesting';
 
@@ -19,7 +19,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
-    exclude: ['**/e2e/**'],
+    exclude: [...configDefaults.exclude, 'e2e/*'],
     env: {
       VITE_API_URL: 'http://api.test',
     },
