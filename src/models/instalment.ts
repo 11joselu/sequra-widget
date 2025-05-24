@@ -11,3 +11,18 @@ export type InstalmentAPIResponse = {
   apr: StringValuePair;
   max_financed_amount: StringValuePair;
 };
+
+export type Instalment = {
+  count: number;
+  amount: StringValuePair;
+};
+
+export function toInstalment(instalment: InstalmentAPIResponse): Instalment {
+  return {
+    count: instalment.instalment_count,
+    amount: {
+      value: instalment.instalment_amount.value,
+      string: instalment.instalment_amount.string,
+    },
+  };
+}

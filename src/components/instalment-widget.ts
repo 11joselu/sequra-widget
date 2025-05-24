@@ -41,7 +41,7 @@ function createInstalment(
   instalmentCount: number,
   totalWithTax: number,
   totalWithTaxCentsString: string
-) {
+): InstalmentAPIResponse {
   return {
     instalment_count: instalmentCount,
     total_with_tax: {
