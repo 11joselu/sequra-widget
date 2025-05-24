@@ -1,11 +1,15 @@
-import type { InstalmentAPIResponse } from '../models/instalment.ts';
+import {
+  type Instalment,
+  type InstalmentAPIResponse,
+  toInstalment,
+} from '../models/instalment.ts';
 
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
-  private readonly instalments: InstalmentAPIResponse[] = [
-    createInstalment(3, 5300, '53,00 €'),
-    createInstalment(6, 2800, '28,00 €'),
-    createInstalment(12, 1550, '15,50 €'),
+  private readonly instalments: Array<Instalment> = [
+    toInstalment(createInstalment(3, 5300, '53,00 €')),
+    toInstalment(createInstalment(6, 2800, '28,00 €')),
+    toInstalment(createInstalment(12, 1550, '15,50 €')),
   ];
 
   constructor() {
@@ -26,8 +30,8 @@ export class InstalmentWidget extends HTMLElement {
           ${this.instalments.map((instalment) => {
             return `
                 <option 
-                  value="${instalment.instalment_count}">
-                  ${instalment.instalment_count} cuotas de ${instalment.instalment_amount.string}/mes 
+                  value="${instalment.count}">
+                  ${instalment.count} cuotas de ${instalment.amount.string}/mes 
                 </option>
           `;
           })}
