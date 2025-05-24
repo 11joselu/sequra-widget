@@ -14,13 +14,15 @@
     "test": "vitest",
     "postinstall": "cd api && npm install",
     "premerchant:preview": "npm run build && cp -r dist merchant-site && npm run predev",
-    "merchant:preview": "http-server merchant-site -p 3000 -o product-page.html"
+    "merchant:preview": "http-server merchant-site -p 3000 -o product-page.html",
+    "e2e": "npx playwright test --project=chromium"
   },
   "devDependencies": {
     "@eslint/css": "^0.8.1",
     "@eslint/js": "^9.27.0",
     "@eslint/markdown": "^6.4.0",
     "@faker-js/faker": "^9.8.0",
+    "@playwright/test": "^1.52.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/user-event": "^14.6.1",
