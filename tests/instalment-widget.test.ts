@@ -2,11 +2,19 @@ import { expect, test } from 'vitest';
 import { within } from '@testing-library/dom';
 import '../src/main';
 
-test('Can select 3 installments payment', () => {
+test('Can select 3 instalment payment', () => {
   const screen = render();
 
   expect(
     screen.getByRole('option', { name: '3 cuotas de 53,00 €/mes' })
+  ).toBeVisible();
+});
+
+test('Can select 6 instalment payment', () => {
+  const screen = render();
+
+  expect(
+    screen.getByRole('option', { name: '6 cuotas de 28,00 €/mes' })
   ).toBeVisible();
 });
 

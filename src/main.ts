@@ -15,6 +15,7 @@ class InstalmentWidget extends HTMLElement {
   private render() {
     this.shadowDOM.innerHTML = `<select>
         <option value="3">3 cuotas de 53,00 €/mes</option>
+        <option value="6">6 cuotas de 28,00 €/mes</option>
       </select>
     `;
   }
