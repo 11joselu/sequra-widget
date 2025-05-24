@@ -1,8 +1,9 @@
+/// <reference types="vite/types/importMeta.d.ts" />
 import nock from 'nock';
 import { faker } from '@faker-js/faker';
 
 export function mockGet<ResponseType>(url: string, response: ResponseType) {
-  return nock('http://localhost:8080')
+  return nock(import.meta.env.VITE_API_URL)
     .get(url)
     .reply(200, response as Body);
 }
@@ -13,7 +14,7 @@ export function mockPost<ResponseType = Record<string, unknown>>(
   status = 200,
   response?: ResponseType
 ) {
-  return nock('http://localhost:8080')
+  return nock(import.meta.env.VITE_API_URL)
     .post(url)
     .times(times)
     .reply(status, response as Body);
