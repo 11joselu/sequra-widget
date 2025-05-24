@@ -10,6 +10,13 @@ test('Can select 3 installments payment', () => {
   ).toBeVisible();
 });
 
+/**
+ * Custom render helper for testing the <sequra-instalment-widget> Web Component.
+ *
+ * This utility was created to work around limitations in standard testing tools
+ * (like Testing Library) which do not natively support querying inside the
+ * shadow DOM of Web Components.
+ */
 function render() {
   document.body.innerHTML = `<sequra-instalment-widget></sequra-instalment-widget>`;
   const element = document.body.querySelector('sequra-instalment-widget')!;
