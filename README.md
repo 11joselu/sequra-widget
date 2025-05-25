@@ -163,10 +163,17 @@ window.seQura.refresh('product-sequra-widget', 14999); // New value in cents
 ## Technical Choices, Tradeoffs & Assumptions
 
 ### Web Component
-**Why**: Chose to implement the widget as a [Custom Element](https://developer.mozilla.org/en-US/docs/Web/Web_Components) to ensure:
-- ✅ Framework-agnostic integration with any merchant site
-- ✅ Minimal footprint with no external dependencies
-- ✅ Encapsulation of logic and style
+- Framework-Agnostic
+The widget can be integrated into any merchant website, regardless of whether it uses React, Vue, Angular, or no framework at all. This means faster time-to-market and fewer integration blockers for merchants, reducing engineering effort on their side.
+
+- Minimal Footprint
+By avoiding large libraries or frameworks, the widget remains lightweight — reducing load time, improving performance metrics ([see impact load time](https://www.fastcompany.com/1825005/how-one-second-could-cost-amazon-16-billion-sales)), and minimizing its impact on the merchant's overall site experience.
+
+- Encapsulation of Logic & Style
+Using Shadow DOM ensures that internal styles and scripts don’t interfere with the host page and vice versa. This guarantees consistent behavior across merchant sites, lowers the risk of regressions, and simplifies maintenance.
+
+- Product-Led Simplicity
+Merchants can drop a single script tag and one HTML line to get up and running. No build steps, SDKs, or extra setup required. This is key to reducing friction in adoption.
 
 ### Why Use a Custom Element?
 
@@ -218,6 +225,8 @@ This workflow helps maintain high-quality, clean, and reliable code throughout d
 
 ### Assumptions & Improvements
 
+- **Modal shows placeholder image**: The widget modal currently displays a placeholder image for installment options.  
+  ✅ *Improvement*: Replace the placeholder with actual product images when available to enhance user experience and trust.
 - **Resilient Event Handling**: Currently, the app assumes that if sending analytics or tracking events fails (e.g., network error or endpoint unavailable), it should **fail silently** to avoid disrupting the user experience. This is intentional to keep the widget running smoothly.  
 
 - **Installments Always Returned**: The implementation assumes the SeQura API always returns valid installment data for a given price.  
