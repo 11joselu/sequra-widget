@@ -11,7 +11,7 @@
 
 .instalment-widget {
   padding: 1.5rem;
-  border: 1px solid rgb(209 213 219);
+  border: 1px solid rgb(37, 37, 37);
 
   .form-header {
     display: flex;
@@ -114,6 +114,10 @@
 
       h2 {
         margin: 0;
+      }
+
+      img {
+        filter: brightness(200%) invert() grayscale(100%);
       }
     }
 
