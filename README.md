@@ -237,3 +237,5 @@ This workflow helps maintain high-quality, clean, and reliable code throughout d
 
 - **Modal UX**: It is currently assumed that users can interact with and dismiss the modal clicking in backdrop.  
   ✅ *Improvement*: Add a clearly visible and accessible close (`×`) button inside the modal to improve user experience, especially on mobile devices or for users relying on assistive technologies.
+
+- **UX**: Improvement - Design a new icon for native select dropdown.
