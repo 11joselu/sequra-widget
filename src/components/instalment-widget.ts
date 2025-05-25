@@ -4,11 +4,12 @@ import { trackInstalmentWidgetEvent } from '../services/track-instalment-widget-
 import * as styles from './style.css?inline';
 import { widgetFormTemplate } from './instalment-widget.template.ts';
 import { instalmentWidgetModalTemplate } from './instalment-widget-modal.template.ts';
+import { instalmentWigetErrorTemplate } from './instalment-wiget-error.template.ts';
 
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
   private instalments: Array<Instalment> = [];
-  private wrapper: HTMLDivElement;
+  private readonly wrapper: HTMLDivElement;
   private productValue: number = 0;
   private cache: Map<number, Array<Instalment>> = new Map();
 
@@ -150,6 +151,6 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private renderErrorMessage() {
-    this.wrapper.innerHTML = `<p data-testid="error-message">Lo sentimos, no podemos mostrar las opciones de financiación en este momento. Inténtalo de nuevo más tarde.</p`;
+    this.wrapper.innerHTML = instalmentWigetErrorTemplate();
   }
 }
