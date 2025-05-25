@@ -122,7 +122,7 @@ describe('Instalment details modal', () => {
 
     expect(
       screen.getByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     ).toBeVisible();
   });
@@ -142,7 +142,7 @@ describe('Instalment details modal', () => {
 
     expect(
       screen.queryByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     ).toBeNull();
   });
@@ -160,13 +160,13 @@ describe('Instalment details modal', () => {
     await user.click(screen.getByRole('button', { name: 'Más info' }));
     await user.click(
       screen.getByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     );
 
     expect(
       screen.getByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     ).toBeVisible();
   });
@@ -187,7 +187,7 @@ describe('Instalment details modal', () => {
 
     expect(
       screen.getAllByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     ).toHaveLength(1);
   });
@@ -210,7 +210,7 @@ describe('Instalment details modal', () => {
 
     expect(
       screen.getByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 7 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 7 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     ).toBeVisible();
   });
@@ -234,7 +234,7 @@ describe('Instalment details modal', () => {
 
     expect(
       screen.getByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 8 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 8 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     ).toBeVisible();
   });
@@ -303,7 +303,7 @@ describe('Track instalment widget event', () => {
 
     expect(
       screen.getByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     ).toBeVisible();
   });
@@ -321,7 +321,7 @@ describe('Track instalment widget event', () => {
 
     expect(
       screen.getByText(
-        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ningun sorpresas.'
+        'Además en el importe mostrado ya se incluye la cuota única mensual de 5 €/mes, por lo que no tendrás ninguna sorpresa.'
       )
     ).toBeVisible();
   });

@@ -181,7 +181,7 @@ export class InstalmentWidget extends HTMLElement {
                   </ul>
                   
                   <footer class="modal-content-footer">
-                      <p>Además en el importe mostrado ya se incluye la cuota única mensual de ${feeAmount}/mes, por lo que no tendrás ningun sorpresas.</p>
+                      <p>Además en el importe mostrado ya se incluye la cuota única mensual de ${feeAmount}/mes, por lo que no tendrás ninguna sorpresa.</p>
                   </footer>
                 </div>
             </div>
