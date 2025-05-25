@@ -94,7 +94,9 @@ Start the dev server first:
 npm run dev
 ```
 
-In a separate terminal:
+App should be running at: http://localhost:5173
+
+Then, in a separate terminal, run the E2E tests:
 
 ```bash
 npm run e2e
@@ -195,7 +197,7 @@ window.seQura.refresh('product-sequra-widget', 14999); // New value in cents
 **Implementation**:
 - API requests intercepted in unit tests using [`nock`](https://github.com/nock/nock). No setup required for developers to run tests.
 
----
+--- 22.15 or later is recommended
 
 ### 🛡️ Code Quality: Husky + Prettier + ESLint
 
