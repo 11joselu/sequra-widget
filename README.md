@@ -197,8 +197,6 @@ window.seQura.refresh('product-sequra-widget', 14999); // New value in cents
 **Implementation**:
 - API requests intercepted in unit tests using [`nock`](https://github.com/nock/nock). No setup required for developers to run tests.
 
---- 22.15 or later is recommended
-
 ### 🛡️ Code Quality: Husky + Prettier + ESLint
 
 To ensure consistent code style and prevent broken code from being committed:
