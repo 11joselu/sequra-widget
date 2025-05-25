@@ -53,6 +53,8 @@ window.seQura.refresh('product-sequra-widget', 14999); // Update to €149.99
 
 ## Installation
 
+> Requires Node.js and npm installed. Node 22.15 or later is recommended
+
 Clone the repository and install dependencies:
 
 ```bash
