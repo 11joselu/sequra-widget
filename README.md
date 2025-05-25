@@ -104,6 +104,8 @@ npm run e2e
 
 E2E tests are written using Playwright and simulate real user interactions inside a Chromium browser.
 
+> *Note*: If e2e fails on startup, try running `npx playwright install chromium` to ensure the Chromium browser is installed correctly.
+
 #### 🔥 Smoke Test
 This project includes a smoke test, which is a lightweight end-to-end test that verifies the most basic and critical functionality (the “happy path”). It checks that:
 - The widget is loaded correctly in the browser
