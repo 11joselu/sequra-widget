@@ -235,3 +235,5 @@ This workflow helps maintain high-quality, clean, and reliable code throughout d
 - **Show error message**: The implementation assumes that we show an error message if the API call fails.  
   ✅ *Improvement*: Add a retry mechanism to handle transient network issues and improve user experience.
 
+- **Modal UX**: It is currently assumed that users can interact with and dismiss the modal clicking in backdrop.  
+  ✅ *Improvement*: Add a clearly visible and accessible close (`×`) button inside the modal to improve user experience, especially on mobile devices or for users relying on assistive technologies.
