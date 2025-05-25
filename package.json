@@ -15,6 +15,7 @@
     "postinstall": "cd api && npm install",
     "premerchant:preview": "npm run build && cp -r dist merchant-site && npm run predev",
     "merchant:preview": "http-server merchant-site -p 3000 -o product-page.html",
+    "pree2e": "npx playwright install chromium",
     "e2e": "npx playwright test --project=chromium"
   },
   "devDependencies": {
