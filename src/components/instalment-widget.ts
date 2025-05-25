@@ -2,6 +2,8 @@ import { type Instalment } from '../models/instalment.ts';
 import { getInstalmentByProductPrice } from '../services/get-instalment-by-product-price.ts';
 import { trackInstalmentWidgetEvent } from '../services/track-instalment-widget-event.ts';
 import * as styles from './style.css?inline';
+import { widgetFormTemplate } from './instalment-widget.template.ts';
+import { instalmentWidgetModalTemplate } from './instalment-widget-modal.template.ts';
 
 export class InstalmentWidget extends HTMLElement {
   private shadowDOM: ShadowRoot;
@@ -87,24 +89,7 @@ export class InstalmentWidget extends HTMLElement {
   }
 
   private render() {
-    this.wrapper.innerHTML = `
-      <form>
-        <div class="form-header">
-            <label for="instalment-options">Págalo en</label>
-            <button type="button" id="moreInfo" class="form-button">Más info</button>
-        </div>
-        <select id="instalment-options" class="form-select">
-          ${this.instalments.map((instalment) => {
-            return `
-                <option 
-                  value="${instalment.count}">
-                  ${instalment.count} cuotas de ${instalment.amount.string}/mes 
-                </option>
-          `;
-          })}
-        </select>
-      </form>
-    `;
+    this.wrapper.innerHTML = widgetFormTemplate(this.instalments);
   }
 
   private showLoading() {
@@ -123,7 +108,7 @@ export class InstalmentWidget extends HTMLElement {
 
     button.addEventListener('click', () => {
       const instalment = this.getSelectedInstalment();
-      modal.innerHTML = this.getModalTemplate(instalment.fee.string);
+      modal.innerHTML = instalmentWidgetModalTemplate(instalment.fee.string);
       this.wrapper.appendChild(modal);
     });
 
@@ -144,50 +129,6 @@ export class InstalmentWidget extends HTMLElement {
       const instalment = this.getSelectedInstalment();
       trackInstalmentWidgetEvent(instalment.count);
     });
-  }
-
-  private getModalTemplate(feeAmount: string): string {
-    return `
-     <section class="modal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content-backdrop" data-testid="modal-backdrop-content">
-            <div class="modal-content-wrapper">
-              <div class="modal-content" id="modal-content">
-                 <header class="modal-content-header">
-                    <img src="https://cdn.prod.website-files.com/62b803c519da726951bd71c2/62b803c519da72c35fbd72a2_Logo.svg" alt="seQura logo" width="80">
-                    <h2>
-                    Fracciona tu pago
-                    </h2>
-                  </header>
-                  <ul class="modal-content-list">
-                    <li>
-                      <div class="modal-content-list-item">
-                        <span>Fracciona tu pago con un coste fijo por cuota.</span>
-                        <img src="https://placehold.co/100" alt="Placeholder" width="50" height="50" />
-                      </div>
-                    </li>
-                    <li>
-                      <div class="modal-content-list-item">
-                        <span>Ahora sólo pagas la primera cuota.</span>
-                        <img src="https://placehold.co/100" alt="Placeholder" width="50" height="50" />
-                      </div> 
-                    </li>
-                    <li>
-                      <div class="modal-content-list-item">
-                        <span>El resto de pagos se cargarán automáticamente a tu tarjeta.</span>
-                        <img src="https://placehold.co/100" alt="Placeholder" width="50" height="50" />
-                      </div> 
-                    </li>
-                  </ul>
-                  
-                  <footer class="modal-content-footer">
-                      <p>Además en el importe mostrado ya se incluye la cuota única mensual de ${feeAmount}/mes, por lo que no tendrás ninguna sorpresa.</p>
-                  </footer>
-                </div>
-            </div>
-        </div>        
-       
-      </section>`;
   }
 
   private getInstalmentSelect() {
