@@ -175,7 +175,7 @@ Using Shadow DOM ensures that internal styles and scripts don’t interfere with
 - Product-Led Simplicity
 Merchants can drop a single script tag and one HTML line to get up and running. No build steps, SDKs, or extra setup required. This is key to reducing friction in adoption.
 
-### Why Use a Custom Element?
+### So... Why Use a Custom Element?
 
 - **No Framework Required** – Works in any web environment
 - **Fast & Lightweight** – Minimal JavaScript and zero dependencies
